@@ -10,5 +10,5 @@ Repo created for learning and experimenting with Keras AI framework.
 3. In cmd: 
    - `conda create -n tfgpu tensorflow-gpu SimpleITK pillow keras matplotlib scikit-image`  
    - `activate tfgpu`    
-4. Run `main.py` using `tfgpu` pyenv with cmd or your favorite IDE (e.g. [VS Code](), [Spyder](), [Atom]()) configured to work with python envs.
+4. Run `main.py` using `tfgpu` pyenv with cmd or your favorite IDE (e.g. VS Code, Spyder, Atom) configured to work with python envs.
 
