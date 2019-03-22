@@ -107,5 +107,5 @@ venv.bak/
 .vscode
 
 #datafiles
-.mhd
-.raw
+*.mhd
+*.raw
