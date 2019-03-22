@@ -4,6 +4,7 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 import model
+import dataProvider
 
 batch_size = 128
 num_classes = 10
@@ -13,7 +14,7 @@ epochs = 2
 img_rows, img_cols = 512, 512
 
 # the data, split between train and test sets
-(x_train, y_train), (x_test, y_test) = 
+(x_train, y_train), (x_test, y_test) = dataProvider.load_data("./images", "./masks")
 x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
 x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
 input_shape = (img_rows, img_cols, 1)
