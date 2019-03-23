@@ -1,8 +1,8 @@
 import os
 import numpy as np
 
-layer_dimensions = (512, 512)
-layer_size = layer_dimensions[0]*layer_dimensions[1]
+layer_dims = (512, 512)
+layer_size = layer_dims[0]*layer_dims[1]
 mask_suffix = "_Delmon_CompleteMM"
 
 def load_data(image_path, image_datatype, mask_path, mask_datatype, file_count):
@@ -22,5 +22,4 @@ def load_image(path, datatype):
 def load_file(filename, image_path, image_datatype, mask_path, mask_datatype):
         images = load_image("{}/{}.raw".format(image_path, filename), image_datatype)
         masks = load_image("{}/{}{}.raw".format(mask_path, filename, mask_suffix), mask_datatype)
-        img_mask_tuples = list(zip(images, masks))
-        return img_mask_tuples
+        return (images, masks)
