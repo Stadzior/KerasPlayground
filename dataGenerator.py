@@ -2,12 +2,12 @@ import numpy as np
 import keras
 import dataProvider
 
-class DataGenerator(keras.utils.Sequence):
+class ImageVsMaskDataGenerator(keras.utils.Sequence):
     'Generates data for Keras'
-    def __init__(self, filenames, batch_size, labels, class_count=2, shuffle=True):
+    def __init__(self, ids, batch_size, labels, class_count=2, shuffle=True):
         'Initialization'
         self.labels = labels
-        self.filenames = filenames
+        self.ids = ids
         self.batch_size = batch_size
         self.class_count = class_count
         self.shuffle = shuffle
@@ -15,7 +15,7 @@ class DataGenerator(keras.utils.Sequence):
 
     def __len__(self):
         'Denotes the number of batches per epoch'
-        return len(self.filenames)
+        return len(self.labels)/self.batch_size
 
     def __getitem__(self, index):
         'Generate one batch of data'
@@ -23,10 +23,10 @@ class DataGenerator(keras.utils.Sequence):
         indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size]
 
         # Find list of IDs
-        list_IDs_for_batch = [self.list_IDs[k] for k in indexes]
+        ids_for_batch = [self.list_IDs[id] for id in indexes]
 
         # Generate data
-        X, y = self.__data_generation(list_IDs_for_batch)
+        X, y = self.__data_generation(ids_for_batch)
 
         return X, y
 

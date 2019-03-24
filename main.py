@@ -5,39 +5,40 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 import model
 import dataProvider
+import dataGenerator
 import numpy as np
+import random
 
 image_layer_count = 469
 batch_size = 469*2 # one batch contains one image and one mask
-class_count = 2 # image and mask
+class_count = 2 # image = 0 and mask = 1
 train_test_ratio = 0.8 # 8 out of 10 images would be used for training
-epochs = 2
+epochs = 1
 
 # Datasets
 ids = dataProvider.get_layer_ids("./images", ".raw", 1, image_layer_count)
-print(ids)
-#labels = # Labels
+random.shuffle(ids)
+labels = {id: 1 if dataProvider.mask_suffix in id else 0 for id in ids}
+train_samples_count = int(batch_size*train_test_ratio)
+train_ids = ids[:train_samples_count]
+test_ids = ids[train_samples_count:]
 
-# # Generators self, filenames, batch_size, labels, class_count=2, shuffle=True
-# training_generator = DataGenerator(partition['train'], labels, **params)
-# validation_generator = DataGenerator(partition['validation'], labels, **params)
+# Generators
+train_generator = dataGenerator.ImageVsMaskDataGenerator(train_ids, batch_size, labels)
+test_generator = dataGenerator.ImageVsMaskDataGenerator(test_ids, batch_size, labels)
 
-# # Design model
-# model = Sequential()
-# [...] # Architecture
-# model.compile()
+# Design model
+model = model.unet()
 
-# # Train model on dataset
-# model.fit_generator(generator=training_generator,
-#                     validation_data=validation_generator,
-#                     use_multiprocessing=True,
-#                     workers=6)
+# Train model on dataset
+model.fit_generator(validgenerator=train_generator,
+                    use_multiprocessing=True,
+                    epochs=epochs,
+                    workers=6)
 
-# data = dataProvider.load_data("./images", np.int16, "./masks", np.int8, 5)
-# data2 = "hue"
-
-# model = model.unet()
-
-# score = model.evaluate(x_test, y_test, verbose=0)
-# print('Test loss:', score[0])
-# print('Test accuracy:', score[1])
+score = model.evaluate_generator(test_generator,
+                                 use_multiprocessing=True,
+                                epochs=epochs,
+                                workers=6)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])

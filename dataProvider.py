@@ -8,6 +8,7 @@ def get_filenames(path, extension, file_count):
 
 def get_layer_ids(path, extension, file_count, layer_count):
         filenames = get_filenames(path, extension, file_count)
+        filenames = filenames + list(map(lambda x: "{}{}".format(x, mask_suffix), filenames))
         ids = range(1, layer_count+1)
         return list(("{}_{}".format(filename, id) for filename in filenames for id in ids))
 
