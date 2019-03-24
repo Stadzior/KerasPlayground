@@ -7,15 +7,34 @@ import model
 import dataProvider
 import numpy as np
 
-# batch_size = 128
-# num_classes = 10
-# epochs = 2
+image_layer_count = 469
+batch_size = 469*2 # one batch contains one image and one mask
+class_count = 2 # image and mask
+train_test_ratio = 0.8 # 8 out of 10 images would be used for training
+epochs = 2
 
-# # input image dimensions
-# img_rows, img_cols = 512, 512
+# Datasets
+ids = dataProvider.get_layer_ids("./images", ".raw", 1, image_layer_count)
+print(ids)
+#labels = # Labels
 
-data = dataProvider.load_data("./images", np.int16, "./masks", np.int8, 5)
-data2 = "hue"
+# # Generators self, filenames, batch_size, labels, class_count=2, shuffle=True
+# training_generator = DataGenerator(partition['train'], labels, **params)
+# validation_generator = DataGenerator(partition['validation'], labels, **params)
+
+# # Design model
+# model = Sequential()
+# [...] # Architecture
+# model.compile()
+
+# # Train model on dataset
+# model.fit_generator(generator=training_generator,
+#                     validation_data=validation_generator,
+#                     use_multiprocessing=True,
+#                     workers=6)
+
+# data = dataProvider.load_data("./images", np.int16, "./masks", np.int8, 5)
+# data2 = "hue"
 
 # model = model.unet()
 
