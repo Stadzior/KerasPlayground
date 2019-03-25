@@ -27,7 +27,7 @@ train_generator = dataGenerator.ImageVsMaskDataGenerator(train_filenames, layer_
 test_generator = dataGenerator.ImageVsMaskDataGenerator(test_filenames, layer_dims, layer_count)
 
 # Design model
-model = model.unet()
+model = model.classifier()
 
 # Train model on dataset
 model.fit_generator(generator=train_generator,
