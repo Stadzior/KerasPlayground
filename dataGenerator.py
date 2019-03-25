@@ -3,51 +3,40 @@ import keras
 import dataProvider
 
 class ImageVsMaskDataGenerator(keras.utils.Sequence):
-    'Generates data for Keras'
-    def __init__(self, ids, batch_size, labels, class_count=2, shuffle=True):
-        'Initialization'
-        self.labels = labels
-        self.ids = ids
-        self.batch_size = batch_size
+    "Generates data for Keras"
+    def __init__(self, filenames, layer_dims, layer_count, class_count=2, shuffle=True):
+        "Initialization"
+        self.filenames = filenames
         self.class_count = class_count
+        self.layer_count = layer_count
+        self.layer_dims = layer_dims
         self.shuffle = shuffle
         self.on_epoch_end()
 
     def __len__(self):
-        'Denotes the number of batches per epoch'
-        return len(self.labels)/self.batch_size
+        return len(self.filenames)
 
     def __getitem__(self, index):
-        'Generate one batch of data'
-        # Generate indexes of the batch
-        indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size]
-
-        # Find list of IDs
-        ids_for_batch = [self.list_IDs[id] for id in indexes]
-
+        "Generate one batch of data"        
         # Generate data
-        X, y = self.__data_generation(ids_for_batch)
-
+        X, y = self.__data_generation(self.filenames[index])
         return X, y
 
-    def on_epoch_end(self):
-        'Updates indexes after each epoch'
-        self.indexes = np.arange(len(self.list_IDs))
-        if self.shuffle == True:
-            np.random.shuffle(self.indexes)
+    def __data_generation(self, filename):
+        "Generates data containing one image and mask samples"        
+        layer_size = self.layer_dims[0]*self.layer_dims[1]
+        images = dataProvider.load_image(".images/{}.raw".format(filename), np.dtype("int16"), self.layer_dims, self.layer_count)
+        masks = dataProvider.load_image(".masks/{}{}.raw".format(filename, dataProvider.mask_suffix), np.dtype("int8"), self.layer_dims, self.layer_count)
+        dataset_size = len(images)+len(masks)
+        X = np.empty((dataset_size, layer_size))
+        y = np.empty(dataset_size, dtype=int)
 
-    def __data_generation(self, list_IDs_temp):
-        'Generates data containing batch_size samples' # X : (n_samples, *dim, n_channels)
-        # Initialization
-        X = np.empty((self.batch_size, *self.dim, self.n_channels))
-        y = np.empty((self.batch_size), dtype=int)
-
-        # Generate data
-        for i, ID in enumerate(list_IDs_temp):
-            # Store sample
-            X[i,] = dataProvider.load_file()
-
-            # Store class
-            y[i] = self.labels[ID]
-
+        for i, sample in enumerate(images):
+            X[i,] = sample
+            y[i] = 0
+        
+        for i, sample in enumerate(masks, len(images)):
+            X[i,] = sample
+            y[i] = 1
+            
         return X, keras.utils.to_categorical(y, num_classes=self.class_count)
