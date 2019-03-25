@@ -25,8 +25,8 @@ class ImageVsMaskDataGenerator(keras.utils.Sequence):
     def __data_generation(self, filename):
         "Generates data containing one image and mask samples"        
         layer_size = self.layer_dims[0]*self.layer_dims[1]
-        images = dataProvider.load_image(".images/{}.raw".format(filename), np.dtype("int16"), self.layer_dims, self.layer_count)
-        masks = dataProvider.load_image(".masks/{}{}.raw".format(filename, dataProvider.mask_suffix), np.dtype("int8"), self.layer_dims, self.layer_count)
+        images = dataProvider.load_image("./images/{}.raw".format(filename), np.dtype("uint16"), self.layer_dims, self.layer_count)
+        masks = dataProvider.load_image("./masks/{}{}.raw".format(filename, dataProvider.mask_suffix), np.dtype("uint8"), self.layer_dims, self.layer_count)
         dataset_size = len(images)+len(masks)
         X = np.empty((dataset_size, layer_size))
         y = np.empty(dataset_size, dtype=int)

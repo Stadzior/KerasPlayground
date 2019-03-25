@@ -17,7 +17,7 @@ file_count = 3 # load n files (image+mask pairs)
 epochs = 1
 
 # Datasets
-filenames = dataProvider.get_filenames("./images", ".raw", file_count, True)
+filenames = dataProvider.get_filenames("./images", ".raw", file_count)
 train_file_count = int(file_count*train_test_ratio)
 train_filenames = filenames[:train_file_count]
 test_filenames = filenames[train_file_count:]
@@ -31,12 +31,12 @@ model = model.classifier()
 
 # Train model on dataset
 model.fit_generator(generator=train_generator,
-                    use_multiprocessing=True,
-                    epochs=epochs,
-                    workers=6)
+                    #use_multiprocessing=True,
+                    epochs=epochs)
+                    #workers=6)
 
-score = model.evaluate_generator(generator=test_generator,
-                                 use_multiprocessing=True,
-                                 workers=6)
+score = model.evaluate_generator(generator=test_generator)
+                                 #use_multiprocessing=True,
+                                 #workers=6)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])

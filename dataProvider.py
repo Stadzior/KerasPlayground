@@ -27,8 +27,8 @@ def load_data(image_path, image_datatype, mask_path, mask_datatype, layer_dims, 
 def load_image(path, datatype, layer_dims, layer_count = None):   
         img_file = open(path, "rb")
         img_str = img_file.read()
-        img_vector = np.fromstring(img_str, dtype=datatype) 
         layer_size = layer_dims[0]*layer_dims[1]
+        img_vector = np.fromstring(img_str, dtype=datatype)[:layer_size*layer_count] 
         layer_count = layer_count if layer_count != None else int(len(img_vector) / layer_size)
         return np.reshape(img_vector, (layer_count, layer_size))
 
