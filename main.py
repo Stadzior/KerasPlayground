@@ -23,8 +23,8 @@ train_filenames = filenames[:train_file_count]
 test_filenames = filenames[train_file_count:]
 
 # Generators
-train_generator = dataGenerator.ImageVsMaskDataGenerator(train_filenames, layer_dims, layer_count)
-test_generator = dataGenerator.ImageVsMaskDataGenerator(test_filenames, layer_dims, layer_count)
+train_generator = dataGenerator.DataGenerator(train_filenames, layer_dims, layer_count)
+test_generator = dataGenerator.DataGenerator(test_filenames, layer_dims, layer_count)
 
 # Design model
 model = model.unet()

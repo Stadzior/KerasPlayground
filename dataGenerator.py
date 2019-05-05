@@ -2,7 +2,7 @@ import numpy as np
 import keras
 import dataProvider
 
-class ImageVsMaskDataGenerator(keras.utils.Sequence):
+class DataGenerator(keras.utils.Sequence):
     "Generates data for Keras"
     def __init__(self, filenames, layer_dims, layer_count, class_count=2, shuffle=True):
         "Initialization"
